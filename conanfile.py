@@ -6,7 +6,7 @@ from conans import ConanFile, tools
 class PngConan(ConanFile):
     name = "pngpp"
     version = "0.2.9"
-    settings = "compiler"
+    settings = "compiler", "os"
     requires = 'libpng/1.6.34@bincrafters/stable'
     license = "<Put the package license here>"
     url = "https://github.com/Artalus/conan-pngpp"
@@ -15,12 +15,16 @@ class PngConan(ConanFile):
     # No settings/options are necessary, this is header only
     foldername = 'png++-%s' % version
 
-    def patch_vs(self, d):
+    def patch_strerror(self, d):
+        if self.settings.compiler != "Visual Studio" and self.settings.os != "Macos":
+            return
+
         with open("%s/error.hpp"%d, 'r') as f:
             lines = f.readlines()
         N = 108-1
         print(lines[N])
         assert(lines[N] == '''            return std::string(strerror_r(errnum, buf, ERRBUF_SIZE));\n''')
+
         lines[N] = '''            return std::string(std::strerror(errnum));\n'''
         with open("%s/error.hpp"%d, 'w') as f:
             lines = f.writelines(lines)
@@ -32,8 +36,7 @@ class PngConan(ConanFile):
         tools.get(filename)
         os.rename(self.foldername, "png++")
 
-        if self.settings.compiler == "Visual Studio":
-            self.patch_vs("png++")
+        self.patch_strerror("png++")
         # self.run("git clone ...") or
         # tools.download("url", "file.zip")
         # tools.unzip("file.zip" )
