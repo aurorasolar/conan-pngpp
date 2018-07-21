@@ -16,7 +16,7 @@ int main() {
     }
     image.write("rgb.png");
     png_t im("rgb.png");
-    assert(im[0][0] == 0);
-    assert(im[1][1] == 2);
+    assert(im[0][0] == png::rgb_pixel(0,0,0));
+    assert(im[1][1] == png::rgb_pixel(1,1,2));
     return 0;
 }
