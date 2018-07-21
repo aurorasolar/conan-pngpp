@@ -4,16 +4,16 @@ from conans import ConanFile, tools
 
 
 class PngConan(ConanFile):
-    name = "png++"
+    name = "pngpp"
     version = "0.2.9"
     settings = "compiler"
     requires = 'libpng/1.6.34@bincrafters/stable'
     license = "<Put the package license here>"
-    url = "<Package recipe repository url here, for issues about the package>"
-    description = "<Description of Png here>"
+    url = "https://github.com/Artalus/conan-pngpp"
+    description = "png++: a C++ wrapper library for libpng"
     no_copy_source = True
     # No settings/options are necessary, this is header only
-    foldername = '%s-%s' % (name, version)
+    foldername = 'png++-%s' % version
 
     def patch_vs(self, d):
         with open("%s/error.hpp"%d, 'r') as f:
@@ -27,23 +27,19 @@ class PngConan(ConanFile):
 
 
     def source(self):
-        '''retrieval of the source code here. Remember you can also put the code
-        in the folder and use exports instead of retrieving it with this
-        source() method
-        '''
         dl = 'http://download.savannah.nongnu.org/releases/pngpp'
         filename = '%s/%s.tar.gz' % (dl, self.foldername,)
         tools.get(filename)
-        os.rename(self.foldername, self.name)
+        os.rename(self.foldername, "png++")
 
         if self.settings.compiler == "Visual Studio":
-            self.patch_vs(self.name)
+            self.patch_vs("png++")
         # self.run("git clone ...") or
         # tools.download("url", "file.zip")
         # tools.unzip("file.zip" )
 
     def package(self):
-        self.copy("%s/*.hpp"%self.name, "include")
+        self.copy("png++/*.hpp", "include")
 
     def package_id(self):
         self.info.header_only()
