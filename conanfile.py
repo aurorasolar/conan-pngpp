@@ -6,6 +6,7 @@ from conans import ConanFile, tools
 class PngConan(ConanFile):
     name = "png++"
     version = "0.2.9"
+    settings = "compiler"
     requires = 'libpng/1.6.34@bincrafters/stable'
     license = "<Put the package license here>"
     url = "<Package recipe repository url here, for issues about the package>"
