@@ -27,6 +27,20 @@ class PngConan(ConanFile):
         with open("%s/error.hpp"%d, 'w') as f:
             lines = f.writelines(lines)
 
+    def patch_win32(self, d):
+        if self.settings.compiler != "Visual Studio":
+            return
+
+        with open("%s/config.hpp"%d, 'r') as f:
+            lines = f.readlines()
+        N = 39-1
+        print(lines[N])
+        assert(lines[N] == '''#elif defined(__WIN32)\n''')
+
+        lines[N] = '''#elif defined(_WIN32)\n'''
+        with open("%s/config.hpp"%d, 'w') as f:
+            lines = f.writelines(lines)
+
 
     def source(self):
         dl = 'http://download.savannah.nongnu.org/releases/pngpp'
@@ -36,6 +50,7 @@ class PngConan(ConanFile):
         os.rename(foldername, "png++")
 
         self.patch_strerror("png++")
+        self.patch_win32("png++")
         # self.run("git clone ...") or
         # tools.download("url", "file.zip")
         # tools.unzip("file.zip" )
