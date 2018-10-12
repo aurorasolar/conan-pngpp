@@ -1,6 +1,6 @@
-#include <png++/png.hpp>
-#include <iostream>
 #include <cassert>
+#include <iostream>
+#include <png++/png.hpp>
 
 using png_t = png::image< png::rgb_pixel >;
 

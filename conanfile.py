@@ -16,6 +16,18 @@ class PngConan(ConanFile):
     no_copy_source = True
     # No settings/options are necessary, this is header only
 
+    def patch_strerror(self, d):
+        with open("%s/error.hpp"%d, 'r') as f:
+            lines = f.readlines()
+        N = 34-1
+        print(lines[N])
+        assert(lines[N] == '''#include <stdexcept>\n''')
+
+        lines.insert(N, '''#include <cstring>\n''')
+        with open("%s/error.hpp"%d, 'w') as f:
+            lines = f.writelines(lines)
+
+
     def source(self):
         dl = 'http://download.savannah.nongnu.org/releases/pngpp'
         foldername = 'png++-%s' % self.version
@@ -23,6 +35,7 @@ class PngConan(ConanFile):
         tools.get(filename)
         os.rename(foldername, "png++")
 
+        self.patch_strerror("png++")
         # self.run("git clone ...") or
         # tools.download("url", "file.zip")
         # tools.unzip("file.zip" )
