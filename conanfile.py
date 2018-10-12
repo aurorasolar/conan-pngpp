@@ -5,7 +5,7 @@ from conans import ConanFile, tools
 
 class PngConan(ConanFile):
     name = "pngpp"
-    version = "0.2.7"
+    version = "0.2.5"
     settings = "compiler", "os"
     requires = 'libpng/1.6.34@bincrafters/stable'
     homepage = "http://www.nongnu.org/pngpp/"
