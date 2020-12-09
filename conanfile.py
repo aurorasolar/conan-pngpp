@@ -7,7 +7,7 @@ class PngConan(ConanFile):
     name = "pngpp"
     version = "0.2.9"
     settings = "compiler", "os"
-    requires = 'libpng/1.6.34@bincrafters/stable'
+    requires = ['libpng/1.6.37@bincrafters/stable', 'zlib/1.2.11']
     homepage = "http://www.nongnu.org/pngpp/"
     url = "https://github.com/Artalus/conan-pngpp"
     license = "http://www.nongnu.org/pngpp/license.html"
